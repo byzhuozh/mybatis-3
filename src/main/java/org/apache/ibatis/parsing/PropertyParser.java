@@ -20,6 +20,8 @@ import java.util.Properties;
 /**
  * @author Clinton Begin
  * @author Kazuki Shimizu
+ *
+ * 动态属性解析器
  */
 public class PropertyParser {
 
