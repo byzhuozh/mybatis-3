@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.apache.ibatis.datasource.DataSourceFactory</OriginalElement>
+  <nodes>
+    <node x="91.71944444444443" y="334.0">org.apache.ibatis.datasource.pooled.PooledDataSourceFactory</node>
+    <node x="0.0" y="253.0">org.apache.ibatis.datasource.pooled.PooledDataSource</node>
+    <node x="178.0" y="253.0">org.apache.ibatis.datasource.unpooled.UnpooledDataSourceFactory</node>
+    <node x="235.5" y="81.0">javax.sql.DataSource</node>
+    <node x="391.5" y="0.0">javax.sql.CommonDataSource</node>
+    <node x="415.0" y="253.0">org.apache.ibatis.datasource.jndi.JndiDataSourceFactory</node>
+    <node x="372.5" y="81.0">javax.sql.ConnectionPoolDataSource</node>
+    <node x="600.5" y="81.0">javax.sql.XADataSource</node>
+    <node x="327.10416666666663" y="172.0">org.apache.ibatis.datasource.DataSourceFactory</node>
+    <node x="29.5625" y="172.0">org.apache.ibatis.datasource.unpooled.UnpooledDataSource</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.apache.ibatis.datasource.pooled.PooledDataSourceFactory" target="org.apache.ibatis.datasource.pooled.PooledDataSource">
+      <point x="-50.0" y="-15.5" />
+      <point x="141.71944444444443" y="309.0" />
+      <point x="79.0" y="309.0" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="org.apache.ibatis.datasource.jndi.JndiDataSourceFactory" target="org.apache.ibatis.datasource.DataSourceFactory">
+      <point x="-60.666666666666686" y="-15.5" />
+      <point x="445.3333333333333" y="228.0" />
+      <point x="446.35416666666663" y="228.0" />
+      <point x="39.75" y="15.5" />
+    </edge>
+    <edge source="org.apache.ibatis.datasource.DataSourceFactory" target="javax.sql.DataSource">
+      <point x="0.0" y="-15.5" />
+      <point x="406.60416666666663" y="152.0" />
+      <point x="310.71428571428567" y="152.0" />
+      <point x="16.714285714285666" y="15.5" />
+    </edge>
+    <edge source="javax.sql.DataSource" target="javax.sql.CommonDataSource">
+      <point x="0.0" y="-15.5" />
+      <point x="294.0" y="56.0" />
+      <point x="419.8333333333333" y="56.0" />
+      <point x="-56.666666666666686" y="15.5" />
+    </edge>
+    <edge source="org.apache.ibatis.datasource.pooled.PooledDataSource" target="org.apache.ibatis.datasource.unpooled.UnpooledDataSource">
+      <point x="-19.75" y="-15.5" />
+      <point x="59.25" y="228.0" />
+      <point x="51.4375" y="228.0" />
+      <point x="-65.625" y="15.5" />
+    </edge>
+    <edge source="org.apache.ibatis.datasource.unpooled.UnpooledDataSourceFactory" target="org.apache.ibatis.datasource.DataSourceFactory">
+      <point x="81.375" y="-15.5" />
+      <point x="367.875" y="228.0" />
+      <point x="366.85416666666663" y="228.0" />
+      <point x="-39.75" y="15.5" />
+    </edge>
+    <edge source="javax.sql.ConnectionPoolDataSource" target="javax.sql.CommonDataSource">
+      <point x="0.0" y="-15.5" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="org.apache.ibatis.datasource.unpooled.UnpooledDataSource" target="javax.sql.DataSource">
+      <point x="0.0" y="-15.5" />
+      <point x="117.0625" y="152.0" />
+      <point x="260.57142857142856" y="152.0" />
+      <point x="-33.428571428571445" y="15.5" />
+    </edge>
+    <edge source="org.apache.ibatis.datasource.pooled.PooledDataSourceFactory" target="org.apache.ibatis.datasource.unpooled.UnpooledDataSourceFactory">
+      <point x="50.0" y="-15.5" />
+      <point x="241.71944444444443" y="309.0" />
+      <point x="286.5" y="309.0" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="javax.sql.XADataSource" target="javax.sql.CommonDataSource">
+      <point x="0.0" y="-15.5" />
+      <point x="667.0" y="56.0" />
+      <point x="533.1666666666666" y="56.0" />
+      <point x="56.66666666666663" y="15.5" />
+    </edge>
+    <edge source="org.apache.ibatis.datasource.pooled.PooledDataSource" target="javax.sql.DataSource">
+      <point x="-59.25" y="-15.5" />
+      <point x="19.062499999999943" y="142.0" />
+      <point x="243.85714285714283" y="142.0" />
+      <point x="-50.14285714285714" y="15.5" />
+    </edge>
+    <edge source="org.apache.ibatis.datasource.unpooled.UnpooledDataSourceFactory" target="javax.sql.DataSource">
+      <point x="27.125" y="-15.5" />
+      <point x="313.625" y="228.0" />
+      <point x="294.0" y="228.0" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="org.apache.ibatis.datasource.unpooled.UnpooledDataSourceFactory" target="org.apache.ibatis.datasource.unpooled.UnpooledDataSource">
+      <point x="-81.375" y="-15.5" />
+      <point x="205.125" y="228.0" />
+      <point x="182.6875" y="228.0" />
+      <point x="65.625" y="15.5" />
+    </edge>
+    <edge source="org.apache.ibatis.datasource.jndi.JndiDataSourceFactory" target="javax.sql.DataSource">
+      <point x="60.66666666666657" y="-15.5" />
+      <point x="566.6666666666665" y="228.0" />
+      <point x="536.625" y="228.0" />
+      <point x="536.625" y="132.0" />
+      <point x="344.1428571428571" y="132.0" />
+      <point x="50.14285714285711" y="15.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="286.5" y="168.0" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
