@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.apache.ibatis.cache.Cache</OriginalElement>
+  <nodes>
+    <node x="1140.5" y="111.0">org.apache.ibatis.cache.decorators.SoftCache</node>
+    <node x="776.5" y="111.0">org.apache.ibatis.cache.decorators.SynchronizedCache</node>
+    <node x="1687.5" y="111.0">org.apache.ibatis.cache.decorators.ScheduledCache</node>
+    <node x="1152.0" y="0.0">org.apache.ibatis.cache.Cache</node>
+    <node x="1406.5" y="111.0">org.apache.ibatis.cache.decorators.FifoCache</node>
+    <node x="1532.5" y="111.0">org.apache.ibatis.cache.decorators.BlockingCache</node>
+    <node x="0.0" y="192.0">org.apache.ibatis.submitted.global_variables_defaults.SupportClasses.CustomCache</node>
+    <node x="513.0" y="192.0">org.apache.ibatis.submitted.cache.CustomCache</node>
+    <node x="312.0" y="192.0">org.apache.ibatis.mapping.CacheBuilderTest.InitializingFailureCache</node>
+    <node x="332.5" y="111.0">org.apache.ibatis.cache.impl.PerpetualCache</node>
+    <node x="1852.5" y="111.0">org.apache.ibatis.cache.decorators.LoggingCache</node>
+    <node x="149.0" y="192.0">org.apache.ibatis.mapping.CacheBuilderTest.InitializingCache</node>
+    <node x="662.0" y="192.0">org.apache.ibatis.submitted.global_variables.CustomCache</node>
+    <node x="492.5" y="111.0">org.apache.ibatis.cache.decorators.LruCache</node>
+    <node x="1268.5" y="111.0">org.apache.ibatis.cache.decorators.WeakCache</node>
+    <node x="615.5" y="111.0">org.apache.ibatis.cache.decorators.SerializedCache</node>
+    <node x="958.5" y="111.0">org.apache.ibatis.cache.decorators.TransactionalCache</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.apache.ibatis.cache.decorators.FifoCache" target="org.apache.ibatis.cache.Cache">
+      <point x="0.0" y="-15.5" />
+      <point x="1459.5" y="81.0" />
+      <point x="1209.9545454545455" y="81.0" />
+      <point x="15.454545454545496" y="15.5" />
+    </edge>
+    <edge source="org.apache.ibatis.submitted.global_variables.CustomCache" target="org.apache.ibatis.cache.impl.PerpetualCache">
+      <point x="0.0" y="-15.5" />
+      <point x="726.5" y="162.0" />
+      <point x="458.5" y="162.0" />
+      <point x="56.0" y="15.5" />
+    </edge>
+    <edge source="org.apache.ibatis.cache.decorators.WeakCache" target="org.apache.ibatis.cache.Cache">
+      <point x="0.0" y="-15.5" />
+      <point x="1327.5" y="91.0" />
+      <point x="1202.2272727272727" y="91.0" />
+      <point x="7.727272727272748" y="15.5" />
+    </edge>
+    <edge source="org.apache.ibatis.cache.decorators.SynchronizedCache" target="org.apache.ibatis.cache.Cache">
+      <point x="0.0" y="-15.5" />
+      <point x="857.5" y="81.0" />
+      <point x="1179.0454545454545" y="81.0" />
+      <point x="-15.454545454545496" y="15.5" />
+    </edge>
+    <edge source="org.apache.ibatis.cache.decorators.TransactionalCache" target="org.apache.ibatis.cache.Cache">
+      <point x="0.0" y="-15.5" />
+      <point x="1039.5" y="91.0" />
+      <point x="1186.7727272727273" y="91.0" />
+      <point x="-7.727272727272748" y="15.5" />
+    </edge>
+    <edge source="org.apache.ibatis.cache.decorators.SerializedCache" target="org.apache.ibatis.cache.Cache">
+      <point x="0.0" y="-15.5" />
+      <point x="686.0" y="71.0" />
+      <point x="1171.3181818181818" y="71.0" />
+      <point x="-23.181818181818244" y="15.5" />
+    </edge>
+    <edge source="org.apache.ibatis.mapping.CacheBuilderTest.InitializingCache" target="org.apache.ibatis.cache.impl.PerpetualCache">
+      <point x="0.0" y="-15.5" />
+      <point x="220.5" y="172.0" />
+      <point x="374.5" y="172.0" />
+      <point x="-28.0" y="15.5" />
+    </edge>
+    <edge source="org.apache.ibatis.submitted.global_variables_defaults.SupportClasses.CustomCache" target="org.apache.ibatis.cache.impl.PerpetualCache">
+      <point x="0.0" y="-15.5" />
+      <point x="64.5" y="162.0" />
+      <point x="346.5" y="162.0" />
+      <point x="-56.0" y="15.5" />
+    </edge>
+    <edge source="org.apache.ibatis.submitted.cache.CustomCache" target="org.apache.ibatis.cache.impl.PerpetualCache">
+      <point x="0.0" y="-15.5" />
+      <point x="577.5" y="172.0" />
+      <point x="430.5" y="172.0" />
+      <point x="28.0" y="15.5" />
+    </edge>
+    <edge source="org.apache.ibatis.cache.decorators.ScheduledCache" target="org.apache.ibatis.cache.Cache">
+      <point x="0.0" y="-15.5" />
+      <point x="1760.0" y="61.0" />
+      <point x="1225.409090909091" y="61.0" />
+      <point x="30.90909090909099" y="15.5" />
+    </edge>
+    <edge source="org.apache.ibatis.mapping.CacheBuilderTest.InitializingFailureCache" target="org.apache.ibatis.cache.impl.PerpetualCache">
+      <point x="0.0" y="-15.5" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="org.apache.ibatis.cache.decorators.LruCache" target="org.apache.ibatis.cache.Cache">
+      <point x="0.0" y="-15.5" />
+      <point x="544.0" y="61.0" />
+      <point x="1163.590909090909" y="61.0" />
+      <point x="-30.90909090909099" y="15.5" />
+    </edge>
+    <edge source="org.apache.ibatis.cache.decorators.LoggingCache" target="org.apache.ibatis.cache.Cache">
+      <point x="0.0" y="-15.5" />
+      <point x="1919.0" y="51.0" />
+      <point x="1233.1363636363637" y="51.0" />
+      <point x="38.63636363636374" y="15.5" />
+    </edge>
+    <edge source="org.apache.ibatis.cache.impl.PerpetualCache" target="org.apache.ibatis.cache.Cache">
+      <point x="0.0" y="-15.5" />
+      <point x="402.5" y="51.0" />
+      <point x="1155.8636363636363" y="51.0" />
+      <point x="-38.63636363636374" y="15.5" />
+    </edge>
+    <edge source="org.apache.ibatis.cache.decorators.BlockingCache" target="org.apache.ibatis.cache.Cache">
+      <point x="0.0" y="-15.5" />
+      <point x="1600.0" y="71.0" />
+      <point x="1217.6818181818182" y="71.0" />
+      <point x="23.181818181818244" y="15.5" />
+    </edge>
+    <edge source="org.apache.ibatis.cache.decorators.SoftCache" target="org.apache.ibatis.cache.Cache">
+      <point x="0.0" y="-15.5" />
+      <point x="0.0" y="15.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="194.5" y="15.5" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

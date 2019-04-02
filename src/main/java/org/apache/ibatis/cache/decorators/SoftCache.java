@@ -27,12 +27,28 @@ import org.apache.ibatis.cache.Cache;
  * Soft Reference cache decorator
  * Thanks to Dr. Heinz Kabutz for his guidance here.
  *
+ * 实现 Cache 接口，基于 java.lang.ref.SoftReference 的 Cache 实现类
+ *
+ * 和 WeakCache 是一致的，差异在使用 SoftEntry 替代了 WeakEntry 类
+ *
  * @author Clinton Begin
  */
 public class SoftCache implements Cache {
+  /**
+   * 强引用的键的队列
+   */
   private final Deque<Object> hardLinksToAvoidGarbageCollection;
+  /**
+   * 被 GC 回收的 WeakEntry 集合，避免被 GC。
+   */
   private final ReferenceQueue<Object> queueOfGarbageCollectedEntries;
+  /**
+   * 装饰的 Cache 对象
+   */
   private final Cache delegate;
+  /**
+   * {@link #hardLinksToAvoidGarbageCollection} 的大小
+   */
   private int numberOfHardLinks;
 
   public SoftCache(Cache delegate) {
@@ -60,6 +76,7 @@ public class SoftCache implements Cache {
 
   @Override
   public void putObject(Object key, Object value) {
+    // 移除已经被 GC 回收的 SoftEntry
     removeGarbageCollectedItems();
     delegate.putObject(key, new SoftEntry(key, value, queueOfGarbageCollectedEntries));
   }

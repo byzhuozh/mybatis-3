@@ -21,9 +21,14 @@ import org.apache.ibatis.cache.Cache;
 
 /**
  * @author Clinton Begin
+ *
+ * 实现 Cache 接口，同步的 Cache 实现类
  */
 public class SynchronizedCache implements Cache {
 
+  /**
+   * 装饰的 Cache 对象
+   */
   private final Cache delegate;
   
   public SynchronizedCache(Cache delegate) {
@@ -36,27 +41,27 @@ public class SynchronizedCache implements Cache {
   }
 
   @Override
-  public synchronized int getSize() {
+  public synchronized int getSize() { // 同步
     return delegate.getSize();
   }
 
   @Override
-  public synchronized void putObject(Object key, Object object) {
+  public synchronized void putObject(Object key, Object object) { // 同步
     delegate.putObject(key, object);
   }
 
   @Override
-  public synchronized Object getObject(Object key) {
+  public synchronized Object getObject(Object key) {  // 同步
     return delegate.getObject(key);
   }
 
   @Override
-  public synchronized Object removeObject(Object key) {
+  public synchronized Object removeObject(Object key) { // 同步
     return delegate.removeObject(key);
   }
 
   @Override
-  public synchronized void clear() {
+  public synchronized void clear() {  // 同步
     delegate.clear();
   }
 
