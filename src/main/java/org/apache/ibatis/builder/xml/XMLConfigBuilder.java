@@ -49,12 +49,26 @@ import org.apache.ibatis.type.JdbcType;
 /**
  * @author Clinton Begin
  * @author Kazuki Shimizu
+ *
+ * ，继承 BaseBuilder 抽象类，XML 配置构建器，主要负责解析 mybatis-config.xml 配置文件
  */
 public class XMLConfigBuilder extends BaseBuilder {
 
+  /**
+   * 是否已解析
+   */
   private boolean parsed;
+  /**
+   * 基于 Java XPath 解析器
+   */
   private final XPathParser parser;
+  /**
+   * 环境
+   */
   private String environment;
+  /**
+   * ReflectorFactory 对象
+   */
   private final ReflectorFactory localReflectorFactory = new DefaultReflectorFactory();
 
   public XMLConfigBuilder(Reader reader) {
@@ -82,52 +96,89 @@ public class XMLConfigBuilder extends BaseBuilder {
   }
 
   private XMLConfigBuilder(XPathParser parser, String environment, Properties props) {
+    // <1> 创建 Configuration 对象
     super(new Configuration());
     ErrorContext.instance().resource("SQL Mapper Configuration");
+    // <2> 设置 Configuration 的 variables 属性
     this.configuration.setVariables(props);
     this.parsed = false;
     this.environment = environment;
     this.parser = parser;
   }
 
+  /**
+   * 解析 XML 成 Configuration 对象
+   *
+   * @return
+   */
   public Configuration parse() {
+    // <1.1> 若已解析，抛出 BuilderException 异常
     if (parsed) {
       throw new BuilderException("Each XMLConfigBuilder can only be used once.");
     }
+    // <1.2> 标记已解析
     parsed = true;
+    // <2> 解析 XML configuration 节点
     parseConfiguration(parser.evalNode("*[local-name()='configuration']"));
     return configuration;
   }
 
+  /**
+   * 解析 <configuration /> 节点
+   *
+   * 可见： \mybatis-3\src\test\java\org\apache\ibatis\builder\MapperConfig.xml
+   * @param root
+   */
   private void parseConfiguration(XNode root) {
     try {
       //issue #117 read properties first
+      // <1> 解析 <properties /> 标签
       propertiesElement(root.evalNode("*[local-name()='properties']"));
+      // <2> 解析 <settings /> 标签
       Properties settings = settingsAsProperties(root.evalNode("*[local-name()='settings']"));
+      // <3> 加载自定义 VFS 实现类，以及日志实现类
       loadCustomVfs(settings);
       loadCustomLogImpl(settings);
+      // <4> 解析 <typeAliases /> 标签
       typeAliasesElement(root.evalNode("*[local-name()='typeAliases']"));
+      // <5> 解析 <plugins /> 标签
       pluginElement(root.evalNode("*[local-name()='plugins']"));
+      // <6> 解析 <objectFactory /> 标签
       objectFactoryElement(root.evalNode("*[local-name()='objectFactory']"));
+      // <7> 解析 <objectWrapperFactory /> 标签
       objectWrapperFactoryElement(root.evalNode("*[local-name()='objectWrapperFactory']"));
+      // <8> 解析 <reflectorFactory /> 标签
       reflectorFactoryElement(root.evalNode("*[local-name()='reflectorFactory']"));
+      // <9> 赋值 <settings /> 到 Configuration 属性
       settingsElement(settings);
       // read it after objectFactory and objectWrapperFactory issue #631
+      // <10> 解析 <environments /> 标签
       environmentsElement(root.evalNode("*[local-name()='environments']"));
+      // <11> 解析 <databaseIdProvider /> 标签
       databaseIdProviderElement(root.evalNode("*[local-name()='databaseIdProvider']"));
+      // <12> 解析 <typeHandlers /> 标签
       typeHandlerElement(root.evalNode("*[local-name()='typeHandlers']"));
+      // <13> 解析 <mappers /> 标签
       mapperElement(root.evalNode("*[local-name()='mappers']"));
     } catch (Exception e) {
       throw new BuilderException("Error parsing SQL Mapper Configuration. Cause: " + e, e);
     }
   }
 
+  /**
+   * 将 <setting /> 标签解析为 Properties 对象
+   *
+   * @param context
+   * @return
+   */
   private Properties settingsAsProperties(XNode context) {
+    // 将子标签，解析成 Properties 对象
     if (context == null) {
       return new Properties();
     }
     Properties props = context.getChildrenAsProperties();
     // Check that all settings are known to the configuration class
+    // 校验每个属性，在 Configuration 中，有相应的 setting 方法，否则抛出 BuilderException 异常
     MetaClass metaConfig = MetaClass.forClass(Configuration.class, localReflectorFactory);
     for (Object key : props.keySet()) {
       if (!metaConfig.hasSetter(String.valueOf(key))) {
@@ -220,21 +271,27 @@ public class XMLConfigBuilder extends BaseBuilder {
 
   private void propertiesElement(XNode context) throws Exception {
     if (context != null) {
+      // 读取子标签们，为 Properties 对象
       Properties defaults = context.getChildrenAsProperties();
+      // 读取 resource 和 url 属性
       String resource = context.getStringAttribute("resource");
       String url = context.getStringAttribute("url");
-      if (resource != null && url != null) {
+      if (resource != null && url != null) {  // resource 和 url 都存在的情况下，抛出 BuilderException 异常
         throw new BuilderException("The properties element cannot specify both a URL and a resource based property file reference.  Please specify one or the other.");
       }
+      // 读取本地 Properties 配置文件到 defaults 中。
       if (resource != null) {
         defaults.putAll(Resources.getResourceAsProperties(resource));
+      // 读取远程 Properties 配置文件到 defaults 中。
       } else if (url != null) {
         defaults.putAll(Resources.getUrlAsProperties(url));
       }
+      // 覆盖 configuration 中的 Properties 对象到 defaults 中。
       Properties vars = configuration.getVariables();
       if (vars != null) {
         defaults.putAll(vars);
       }
+      // 设置 defaults 到 parser 和 configuration 中。
       parser.setVariables(defaults);
       configuration.setVariables(defaults);
     }
