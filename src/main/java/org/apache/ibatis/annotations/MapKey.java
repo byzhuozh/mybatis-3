@@ -23,10 +23,19 @@ import java.lang.annotation.Target;
 
 /**
  * @author Clinton Begin
+ *
+ * Map 结果的键的注解
+ *
+ * 如果使用了这个注解，定义在 Mapper 接口中的方法能够调用 SqlSession#flushStatements() 方法。（Mybatis 3.3及以上）
+ *
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface MapKey {
+
+  /**
+   * @return 键名
+   */
   String value();
 }

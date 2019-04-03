@@ -30,5 +30,10 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Lang {
+
+  /**
+   * @return 驱动类
+   * @return
+   */
   Class<? extends LanguageDriver> value();
 }
