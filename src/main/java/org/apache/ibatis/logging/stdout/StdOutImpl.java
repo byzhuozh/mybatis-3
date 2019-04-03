@@ -19,6 +19,8 @@ import org.apache.ibatis.logging.Log;
 
 /**
  * @author Clinton Begin
+ *
+ * 实现 Log 接口，StdOut 实现类
  */
 public class StdOutImpl implements Log {
 
