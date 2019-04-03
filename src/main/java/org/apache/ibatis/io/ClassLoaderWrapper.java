@@ -22,10 +22,21 @@ import java.net.URL;
  * A class to wrap access to multiple class loaders making them work as one
  *
  * @author Clinton Begin
+ *
+ * ClassLoader 包装器。可使用多个 ClassLoader 加载对应的资源，直到有一成功后返回资源
  */
 public class ClassLoaderWrapper {
 
+  /**
+   * 默认 ClassLoader 对象
+   *
+   * 目前不存在初始化该属性的构造方法。可通过 ClassLoaderWrapper.defaultClassLoader = xxx 的方式，进行设置
+   */
   ClassLoader defaultClassLoader;
+
+  /**
+   * 系统 ClassLoader 对象
+   */
   ClassLoader systemClassLoader;
 
   ClassLoaderWrapper() {
@@ -38,6 +49,8 @@ public class ClassLoaderWrapper {
   
   /**
    * Get a resource as a URL using the current class path
+   *
+   * 获得指定资源的 URL
    *
    * @param resource - the resource to locate
    * @return the resource or null
@@ -60,6 +73,8 @@ public class ClassLoaderWrapper {
   /**
    * Get a resource from the classpath
    *
+   * 获得指定资源的 InputStream 对象
+   *
    * @param resource - the resource to find
    * @return the stream or null
    */
@@ -80,6 +95,8 @@ public class ClassLoaderWrapper {
 
   /**
    * Find a class on the classpath (or die trying)
+   *
+   * 获得指定类名对应的类
    *
    * @param name - the class to look for
    * @return - the class
@@ -109,12 +126,14 @@ public class ClassLoaderWrapper {
    * @return the resource or null
    */
   InputStream getResourceAsStream(String resource, ClassLoader[] classLoader) {
+    // 遍历 ClassLoader 数组
     for (ClassLoader cl : classLoader) {
       if (null != cl) {
-
+        // 获得 InputStream ，不带 /
         // try to find the resource as passed
         InputStream returnValue = cl.getResourceAsStream(resource);
 
+        // 获得 InputStream ，带 /
         // now, some class loaders want this leading "/", so we'll add it and try again if we didn't find the resource
         if (null == returnValue) {
           returnValue = cl.getResourceAsStream("/" + resource);
@@ -131,6 +150,8 @@ public class ClassLoaderWrapper {
   /**
    * Get a resource as a URL using the current class path
    *
+   * 获得指定资源的 URL
+   *
    * @param resource    - the resource to locate
    * @param classLoader - the class loaders to examine
    * @return the resource or null
@@ -139,13 +160,15 @@ public class ClassLoaderWrapper {
 
     URL url;
 
+    // 遍历 ClassLoader 数组
     for (ClassLoader cl : classLoader) {
 
       if (null != cl) {
-
+        // 获得 URL ，不带 /
         // look for the resource as passed in...
         url = cl.getResource(resource);
 
+        // 获得 URL ，带 /
         // ...but some class loaders want this leading "/", so we'll add it
         // and try again if we didn't find the resource
         if (null == url) {
@@ -154,6 +177,7 @@ public class ClassLoaderWrapper {
 
         // "It's always in the last place I look for it!"
         // ... because only an idiot would keep looking for it after finding it, so stop looking already.
+        // 成功获得到，返回
         if (null != url) {
           return url;
         }
@@ -177,14 +201,16 @@ public class ClassLoaderWrapper {
    */
   Class<?> classForName(String name, ClassLoader[] classLoader) throws ClassNotFoundException {
 
+    // 遍历 ClassLoader 数组
     for (ClassLoader cl : classLoader) {
 
       if (null != cl) {
 
         try {
-
+          // 获得类
           Class<?> c = Class.forName(name, true, cl);
 
+          // 成功获得到，返回
           if (null != c) {
             return c;
           }
@@ -201,6 +227,12 @@ public class ClassLoaderWrapper {
 
   }
 
+  /**
+   * 获得 ClassLoader 数组
+   *
+   * @param classLoader
+   * @return
+   */
   ClassLoader[] getClassLoaders(ClassLoader classLoader) {
     return new ClassLoader[]{
         classLoader,
