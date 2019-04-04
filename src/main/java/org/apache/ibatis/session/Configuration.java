@@ -99,6 +99,9 @@ import org.apache.ibatis.type.TypeHandlerRegistry;
  */
 public class Configuration {
 
+  /**
+   * DB Environment 对象
+   */
   protected Environment environment;
 
   protected boolean safeRowBoundsEnabled;
@@ -131,13 +134,28 @@ public class Configuration {
    * 参见 {@link org.apache.ibatis.builder.xml.XMLConfigBuilder#propertiesElement(XNode context)} 方法
    */
   protected Properties variables = new Properties();
+
+  /**
+   * ReflectorFactory 对象
+   */
   protected ReflectorFactory reflectorFactory = new DefaultReflectorFactory();
+
+  /**
+   * ObjectFactory 对象
+   */
   protected ObjectFactory objectFactory = new DefaultObjectFactory();
+
+  /**
+   * ObjectWrapperFactory 对象
+   */
   protected ObjectWrapperFactory objectWrapperFactory = new DefaultObjectWrapperFactory();
 
   protected boolean lazyLoadingEnabled = false;
   protected ProxyFactory proxyFactory = new JavassistProxyFactory(); // #224 Using internal Javassist instead of OGNL
 
+  /**
+   * 数据库标识
+   */
   protected String databaseId;
   /**
    * Configuration factory class.
@@ -147,7 +165,14 @@ public class Configuration {
    */
   protected Class<?> configurationFactory;
 
+  /**
+   * MapperRegistry 对象
+   */
   protected final MapperRegistry mapperRegistry = new MapperRegistry(this);
+
+  /**
+   * 拦截器链
+   */
   protected final InterceptorChain interceptorChain = new InterceptorChain();
   protected final TypeHandlerRegistry typeHandlerRegistry = new TypeHandlerRegistry();
   protected final TypeAliasRegistry typeAliasRegistry = new TypeAliasRegistry();
@@ -161,11 +186,26 @@ public class Configuration {
   protected final Map<String, ParameterMap> parameterMaps = new StrictMap<>("Parameter Maps collection");
   protected final Map<String, KeyGenerator> keyGenerators = new StrictMap<>("Key Generators collection");
 
+  /**
+   *
+   * 已加载资源( Resource )集合
+   */
   protected final Set<String> loadedResources = new HashSet<>();
   protected final Map<String, XNode> sqlFragments = new StrictMap<>("XML fragments parsed from previous mappers");
 
+  /**
+   * XMLStatementBuilder 集合
+   */
   protected final Collection<XMLStatementBuilder> incompleteStatements = new LinkedList<>();
+
+  /**
+   * CacheRefResolver 集合
+   */
   protected final Collection<CacheRefResolver> incompleteCacheRefs = new LinkedList<>();
+
+  /**
+   * ResultMapResolver 集合
+   */
   protected final Collection<ResultMapResolver> incompleteResultMaps = new LinkedList<>();
   protected final Collection<MethodResolver> incompleteMethods = new LinkedList<>();
 
@@ -173,6 +213,11 @@ public class Configuration {
    * A map holds cache-ref relationship. The key is the namespace that
    * references a cache bound to another namespace and the value is the
    * namespace which the actual cache is bound to.
+   *
+   *  Cache 指向的映射
+   *
+   *  @see #addCacheRef(String, String)
+   *  @see org.apache.ibatis.builder.xml.XMLMapperBuilder#cacheRefElement(XNode)
    */
   protected final Map<String, String> cacheRefMap = new HashMap<>();
 
@@ -744,6 +789,7 @@ public class Configuration {
   }
 
   public void addMappers(String packageName) {
+    // 扫描该包下所有的 Mapper 接口，并添加到 mapperRegistry 中
     mapperRegistry.addMappers(packageName);
   }
 
