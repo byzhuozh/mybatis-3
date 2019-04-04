@@ -79,6 +79,13 @@ public class MapperBuilderAssistant extends BaseBuilder {
         this.currentNamespace = currentNamespace;
     }
 
+    /**
+     *  拼接命名空间
+     *
+     * @param base
+     * @param isReference
+     * @return
+     */
     public String applyCurrentNamespace(String base, boolean isReference) {
         if (base == null) {
             return null;
@@ -201,17 +208,23 @@ public class MapperBuilderAssistant extends BaseBuilder {
             Discriminator discriminator,
             List<ResultMapping> resultMappings,
             Boolean autoMapping) {
+        // <1> 获得 ResultMap 编号，即格式为 `${namespace}.${id}`
         id = applyCurrentNamespace(id, false);
+        // <2.1> 获取完整的 extend 属性，即格式为 `${namespace}.${extend}` 。从这里的逻辑来看，貌似只能自己 namespace 下的 ResultMap
         extend = applyCurrentNamespace(extend, true);
 
+        // <2.2> 如果有父类，则将父类的 ResultMap 集合，添加到 resultMappings 中
         if (extend != null) {
+            // <2.2.1> 获得 extend 对应的 ResultMap 对象。如果不存在，则抛出 IncompleteElementException 异常
             if (!configuration.hasResultMap(extend)) {
                 throw new IncompleteElementException("Could not find a parent resultmap with id '" + extend + "'");
             }
             ResultMap resultMap = configuration.getResultMap(extend);
+            // 获取 extend 的 ResultMap 对象的 ResultMapping 集合，并移除 resultMappings
             List<ResultMapping> extendedResultMappings = new ArrayList<>(resultMap.getResultMappings());
             extendedResultMappings.removeAll(resultMappings);
             // Remove parent constructor if this resultMap declares a constructor.
+            // 判断当前的 resultMappings 是否有构造方法，如果有，则从 extendedResultMappings 移除所有的构造类型的 ResultMapping 们
             boolean declaresConstructor = false;
             for (ResultMapping resultMapping : resultMappings) {
                 if (resultMapping.getFlags().contains(ResultFlag.CONSTRUCTOR)) {
@@ -227,15 +240,29 @@ public class MapperBuilderAssistant extends BaseBuilder {
                     }
                 }
             }
+            // 将 extendedResultMappings 添加到 resultMappings 中
             resultMappings.addAll(extendedResultMappings);
         }
+        // <3> 创建 ResultMap 对象
         ResultMap resultMap = new ResultMap.Builder(configuration, id, type, resultMappings, autoMapping)
                 .discriminator(discriminator)
                 .build();
+        // <4> 添加到 configuration 中
         configuration.addResultMap(resultMap);
         return resultMap;
     }
 
+    /**
+     * 构建 Discriminator 对象
+     *
+     * @param resultType
+     * @param column
+     * @param javaType
+     * @param jdbcType
+     * @param typeHandler
+     * @param discriminatorMap
+     * @return
+     */
     public Discriminator buildDiscriminator(
             Class<?> resultType,
             String column,
@@ -243,6 +270,7 @@ public class MapperBuilderAssistant extends BaseBuilder {
             JdbcType jdbcType,
             Class<? extends TypeHandler<?>> typeHandler,
             Map<String, String> discriminatorMap) {
+        // 构建 ResultMapping 对象
         ResultMapping resultMapping = buildResultMapping(
                 resultType,
                 null,
@@ -258,12 +286,14 @@ public class MapperBuilderAssistant extends BaseBuilder {
                 null,
                 null,
                 false);
+        // 创建 namespaceDiscriminatorMap 映射
         Map<String, String> namespaceDiscriminatorMap = new HashMap<>();
         for (Map.Entry<String, String> e : discriminatorMap.entrySet()) {
             String resultMap = e.getValue();
-            resultMap = applyCurrentNamespace(resultMap, true);
+            resultMap = applyCurrentNamespace(resultMap, true); // 生成 resultMap 标识
             namespaceDiscriminatorMap.put(e.getKey(), resultMap);
         }
+        // 构建 Discriminator 对象
         return new Discriminator.Builder(configuration, resultMapping, namespaceDiscriminatorMap).build();
     }
 
@@ -394,27 +424,38 @@ public class MapperBuilderAssistant extends BaseBuilder {
             String resultSet,
             String foreignColumn,
             boolean lazy) {
+        // <1> 解析对应的 Java Type 类和 TypeHandler 对象
         Class<?> javaTypeClass = resolveResultJavaType(resultType, property, javaType);
         TypeHandler<?> typeHandlerInstance = resolveTypeHandler(javaTypeClass, typeHandler);
+        // <2> 解析组合字段名称成 ResultMapping 集合。涉及「关联的嵌套查询」
         List<ResultMapping> composites = parseCompositeColumnName(column);
+        // <3> 创建 ResultMapping 对象
         return new ResultMapping.Builder(configuration, property, column, javaTypeClass)
                 .jdbcType(jdbcType)
-                .nestedQueryId(applyCurrentNamespace(nestedSelect, true))
-                .nestedResultMapId(applyCurrentNamespace(nestedResultMap, true))
+
+                .nestedQueryId(applyCurrentNamespace(nestedSelect, true))   // 拼接命名空间
+                .nestedResultMapId(applyCurrentNamespace(nestedResultMap, true))     // 拼接命名空间
                 .resultSet(resultSet)
                 .typeHandler(typeHandlerInstance)
                 .flags(flags == null ? new ArrayList<ResultFlag>() : flags)
                 .composites(composites)
-                .notNullColumns(parseMultipleColumnNames(notNullColumn))
+                .notNullColumns(parseMultipleColumnNames(notNullColumn))    // 将字符串解析成集合
                 .columnPrefix(columnPrefix)
                 .foreignColumn(foreignColumn)
                 .lazy(lazy)
                 .build();
     }
 
+    /**
+     * 将字符串解析成集合
+     *
+     * @param columnName
+     * @return
+     */
     private Set<String> parseMultipleColumnNames(String columnName) {
         Set<String> columns = new HashSet<>();
         if (columnName != null) {
+            // 多个字段，使用 ，分隔
             if (columnName.indexOf(',') > -1) {
                 StringTokenizer parser = new StringTokenizer(columnName, "{}, ", false);
                 while (parser.hasMoreTokens()) {
@@ -430,13 +471,16 @@ public class MapperBuilderAssistant extends BaseBuilder {
 
     private List<ResultMapping> parseCompositeColumnName(String columnName) {
         List<ResultMapping> composites = new ArrayList<>();
+        // 分词，解析其中的 property 和 column 的组合对
         if (columnName != null && (columnName.indexOf('=') > -1 || columnName.indexOf(',') > -1)) {
             StringTokenizer parser = new StringTokenizer(columnName, "{}=, ", false);
             while (parser.hasMoreTokens()) {
                 String property = parser.nextToken();
                 String column = parser.nextToken();
+                // 创建 ResultMapping 对象
                 ResultMapping complexResultMapping = new ResultMapping.Builder(
                         configuration, property, column, configuration.getTypeHandlerRegistry().getUnknownTypeHandler()).build();
+                // 添加到 composites 中
                 composites.add(complexResultMapping);
             }
         }
