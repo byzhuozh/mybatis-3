@@ -26,6 +26,8 @@ import org.apache.ibatis.io.Resources;
  * @author Daniel Guggi 
  *
  * @see <a href='https://github.com/mybatis/mybatis-3/issues/161'>Issue 161</a>
+ *
+ * 继承 ognl.DefaultClassResolver 类，OGNL 类解析器实现类
  */
 public class OgnlClassResolver extends DefaultClassResolver {
 

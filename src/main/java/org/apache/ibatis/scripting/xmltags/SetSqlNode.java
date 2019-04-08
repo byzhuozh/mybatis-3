@@ -22,6 +22,9 @@ import org.apache.ibatis.session.Configuration;
 
 /**
  * @author Clinton Begin
+ *
+ * 继承 TrimSqlNode 类，<set /> 标签的 SqlNode 实现类
+ *   SetHandler 和 TrimHandler 是一个套路的原因
  */
 public class SetSqlNode extends TrimSqlNode {
 
