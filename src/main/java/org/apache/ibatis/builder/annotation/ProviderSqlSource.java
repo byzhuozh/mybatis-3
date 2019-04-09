@@ -29,6 +29,8 @@ import org.apache.ibatis.reflection.ParamNameResolver;
 import org.apache.ibatis.session.Configuration;
 
 /**
+ * 实现 SqlSource 接口，基于方法上的 @ProviderXXX 注解的 SqlSource 实现类
+ *
  * @author Clinton Begin
  * @author Kazuki Shimizu
  */
@@ -36,11 +38,29 @@ public class ProviderSqlSource implements SqlSource {
 
   private final Configuration configuration;
   private final SqlSourceBuilder sqlSourceParser;
+  /**
+   * `@ProviderXXX` 注解的对应的类
+   */
   private final Class<?> providerType;
+  /**
+   * `@ProviderXXX` 注解的对应的方法
+   */
   private Method providerMethod;
+  /**
+   * `@ProviderXXX` 注解的对应的方法的参数名数组
+   */
   private String[] providerMethodArgumentNames;
+  /**
+   * `@ProviderXXX` 注解的对应的方法的参数类型数组
+   */
   private Class<?>[] providerMethodParameterTypes;
+  /**
+   * 若 {@link #providerMethodParameterTypes} 参数有 ProviderContext 类型的，创建 ProviderContext 对象
+   */
   private ProviderContext providerContext;
+  /**
+   * {@link #providerMethodParameterTypes} 参数中，ProviderContext 类型的参数，在数组中的位置
+   */
   private Integer providerContextIndex;
 
   /**
@@ -58,8 +78,11 @@ public class ProviderSqlSource implements SqlSource {
     String providerMethodName;
     try {
       this.configuration = configuration;
+      // 创建 SqlSourceBuilder 对象
       this.sqlSourceParser = new SqlSourceBuilder(configuration);
+      // 获得 @ProviderXXX 注解的对应的类
       this.providerType = (Class<?>) provider.getClass().getMethod("type").invoke(provider);
+      // 获得 @ProviderXXX 注解的对应的方法相关的信息
       providerMethodName = (String) provider.getClass().getMethod("method").invoke(provider);
 
       for (Method m : this.providerType.getMethods()) {
@@ -99,12 +122,15 @@ public class ProviderSqlSource implements SqlSource {
 
   @Override
   public BoundSql getBoundSql(Object parameterObject) {
+    // <1> 创建 SqlSource 对象
     SqlSource sqlSource = createSqlSource(parameterObject);
+    // <2> 获得 BoundSql 对象
     return sqlSource.getBoundSql(parameterObject);
   }
 
   private SqlSource createSqlSource(Object parameterObject) {
     try {
+      // <1> 获得 SQL
       int bindParameterCount = providerMethodParameterTypes.length - (providerContext == null ? 0 : 1);
       String sql;
       if (providerMethodParameterTypes.length == 0) {
@@ -125,7 +151,10 @@ public class ProviderSqlSource implements SqlSource {
                 + (bindParameterCount == 1 ? "named argument(@Param)": "multiple arguments")
                 + " using a specifying parameterObject. In this case, please specify a 'java.util.Map' object.");
       }
+      // <2> 获得参数
       Class<?> parameterType = parameterObject == null ? Object.class : parameterObject.getClass();
+      // <3> 替换掉 SQL 上的属性
+      // <4> 解析出 SqlSource 对象
       return sqlSourceParser.parse(replacePlaceholder(sql), parameterType, new HashMap<String, Object>());
     } catch (BuilderException e) {
       throw e;
@@ -161,9 +190,11 @@ public class ProviderSqlSource implements SqlSource {
 
   private String invokeProviderMethod(Object... args) throws Exception {
     Object targetObject = null;
+    // 获得对象
     if (!Modifier.isStatic(providerMethod.getModifiers())) {
       targetObject = providerType.newInstance();
     }
+    // 反射调用方法
     CharSequence sql = (CharSequence) providerMethod.invoke(targetObject, args);
     return sql != null ? sql.toString() : null;
   }

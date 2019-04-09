@@ -29,6 +29,8 @@ import java.util.HashMap;
  * attribute = name '=' value
  * </pre>
  *
+ * 继承 HashMap 类，负责参数表达式
+ *
  * @author Frank D. Martinez [mnesarco]
  */
 public class ParameterExpression extends HashMap<String, String> {
