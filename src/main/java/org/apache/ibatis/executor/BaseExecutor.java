@@ -204,7 +204,7 @@ public abstract class BaseExecutor implements Executor {
             if (list != null) {
                 handleLocallyCachedOutputParameters(ms, key, parameter, boundSql);
             } else {
-                // <4.3> 获得不到，则从数据库中查询
+                // <4.3> 获得不到，则从数据库中查询, 同时将结果缓存起来
                 list = queryFromDatabase(ms, parameter, rowBounds, resultHandler, key, boundSql);
             }
         } finally {
