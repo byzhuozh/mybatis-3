@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.apache.ibatis.executor.keygen.KeyGenerator</OriginalElement>
+  <nodes>
+    <node x="213.0" y="86.0">org.apache.ibatis.executor.keygen.NoKeyGenerator</node>
+    <node x="406.0" y="86.0">org.apache.ibatis.executor.keygen.Jdbc3KeyGenerator</node>
+    <node x="223.0" y="0.0">org.apache.ibatis.executor.keygen.KeyGenerator</node>
+    <node x="0.0" y="86.0">org.apache.ibatis.executor.keygen.SelectKeyGenerator</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.apache.ibatis.executor.keygen.NoKeyGenerator" target="org.apache.ibatis.executor.keygen.KeyGenerator">
+      <point x="0.0" y="-18.0" />
+      <point x="0.0" y="18.0" />
+    </edge>
+    <edge source="org.apache.ibatis.executor.keygen.SelectKeyGenerator" target="org.apache.ibatis.executor.keygen.KeyGenerator">
+      <point x="0.0" y="-18.0" />
+      <point x="96.5" y="61.0" />
+      <point x="248.5" y="61.0" />
+      <point x="-51.0" y="18.0" />
+    </edge>
+    <edge source="org.apache.ibatis.executor.keygen.Jdbc3KeyGenerator" target="org.apache.ibatis.executor.keygen.KeyGenerator">
+      <point x="0.0" y="-18.0" />
+      <point x="501.5" y="61.0" />
+      <point x="350.5" y="61.0" />
+      <point x="51.0" y="18.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="110.5" y="-95.5" />
+  <SelectedNodes>
+    <node>org.apache.ibatis.executor.keygen.NoKeyGenerator</node>
+  </SelectedNodes>
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
