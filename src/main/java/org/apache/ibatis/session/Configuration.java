@@ -97,7 +97,7 @@ public class Configuration {
     protected final LanguageDriverRegistry languageRegistry = new LanguageDriverRegistry();
     /**
      * MappedStatement 映射
-     *
+     * <p>
      * KEY：`${namespace}.${id}`
      */
     protected final Map<String, MappedStatement> mappedStatements = new StrictMap<MappedStatement>("Mapped Statements collection")
@@ -105,25 +105,24 @@ public class Configuration {
                     ". please check " + savedValue.getResource() + " and " + targetValue.getResource());
     /**
      * Cache 对象集合 （二级缓存）
-     *
+     * <p>
      * KEY：命名空间 namespace
      */
     protected final Map<String, Cache> caches = new StrictMap<>("Caches collection");
     /**
      * ResultMap 的映射
-     *
+     * <p>
      * KEY：`${namespace}.${id}`
      */
     protected final Map<String, ResultMap> resultMaps = new StrictMap<>("Result Maps collection");
     protected final Map<String, ParameterMap> parameterMaps = new StrictMap<>("Parameter Maps collection");
     /**
      * KeyGenerator 的映射
-     *
+     * <p>
      * KEY：在 {@link #mappedStatements} 的 KEY 的基础上，跟上 {@link SelectKeyGenerator#SELECT_KEY_SUFFIX}
      */
     protected final Map<String, KeyGenerator> keyGenerators = new StrictMap<>("Key Generators collection");
     /**
-     *
      * 已加载资源( Resource )集合
      */
     protected final Set<String> loadedResources = new HashSet<>();
@@ -183,7 +182,7 @@ public class Configuration {
     protected AutoMappingUnknownColumnBehavior autoMappingUnknownColumnBehavior = AutoMappingUnknownColumnBehavior.NONE;
     /**
      * 变量 Properties 对象。
-     *
+     * <p>
      * 参见 {@link org.apache.ibatis.builder.xml.XMLConfigBuilder#propertiesElement(XNode context)} 方法
      */
     protected Properties variables = new Properties();
@@ -513,6 +512,7 @@ public class Configuration {
     /**
      * Set a default {@link TypeHandler} class for {@link Enum}.
      * A default {@link TypeHandler} is {@link org.apache.ibatis.type.EnumTypeHandler}.
+     *
      * @param typeHandler a type handler class for {@link Enum}
      * @since 3.4.5
      */
@@ -579,7 +579,9 @@ public class Configuration {
         return languageRegistry.getDefaultDriver();
     }
 
-    /** @deprecated Use {@link #getDefaultScriptingLanguageInstance()} */
+    /**
+     * @deprecated Use {@link #getDefaultScriptingLanguageInstance()}
+     */
     @Deprecated
     public LanguageDriver getDefaultScriptingLanuageInstance() {
         return getDefaultScriptingLanguageInstance();
@@ -589,8 +591,18 @@ public class Configuration {
         return MetaObject.forObject(object, objectFactory, objectWrapperFactory, reflectorFactory);
     }
 
+    /**
+     * 创建 ParameterHandler 对象
+     *
+     * @param mappedStatement
+     * @param parameterObject
+     * @param boundSql
+     * @return
+     */
     public ParameterHandler newParameterHandler(MappedStatement mappedStatement, Object parameterObject, BoundSql boundSql) {
+        // 创建 ParameterHandler 对象
         ParameterHandler parameterHandler = mappedStatement.getLang().createParameterHandler(mappedStatement, parameterObject, boundSql);
+        // 应用插件
         parameterHandler = (ParameterHandler) interceptorChain.pluginAll(parameterHandler);
         return parameterHandler;
     }
@@ -603,7 +615,9 @@ public class Configuration {
     }
 
     public StatementHandler newStatementHandler(Executor executor, MappedStatement mappedStatement, Object parameterObject, RowBounds rowBounds, ResultHandler resultHandler, BoundSql boundSql) {
+        // <1> 创建 RoutingStatementHandler 对象
         StatementHandler statementHandler = new RoutingStatementHandler(executor, mappedStatement, parameterObject, rowBounds, resultHandler, boundSql);
+        // 应用插件
         statementHandler = (StatementHandler) interceptorChain.pluginAll(statementHandler);
         return statementHandler;
     }
@@ -615,7 +629,7 @@ public class Configuration {
     /**
      * 创建 Executor 对象
      *
-     * @param transaction 事务对象
+     * @param transaction  事务对象
      * @param executorType 执行器类型
      * @return Executor 对象
      */
@@ -969,6 +983,7 @@ public class Configuration {
          * Assign a function for producing a conflict error message when contains value with the same key.
          * <p>
          * function arguments are 1st is saved value and 2nd is target value.
+         *
          * @param conflictMessageProducer A function for producing a conflict error message
          * @return a conflict error message
          * @since 3.5.0
