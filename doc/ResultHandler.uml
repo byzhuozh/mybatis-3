@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.apache.ibatis.session.ResultHandler</OriginalElement>
+  <nodes>
+    <node x="0.0" y="253.0">org.apache.ibatis.executor.resultset.DefaultResultSetHandler</node>
+    <node x="0.0" y="86.0">org.apache.ibatis.cursor.defaults.DefaultCursor.ObjectWrapperResultHandler</node>
+    <node x="271.0" y="253.0">org.apache.ibatis.executor.result.DefaultResultContext</node>
+    <node x="519.0" y="253.0">org.apache.ibatis.cursor.defaults.DefaultCursor</node>
+    <node x="533.0" y="86.0">org.apache.ibatis.executor.result.DefaultResultHandler</node>
+    <node x="543.5" y="167.0">org.apache.ibatis.cursor.Cursor</node>
+    <node x="24.5" y="167.0">org.apache.ibatis.executor.resultset.ResultSetHandler</node>
+    <node x="317.5" y="0.0">org.apache.ibatis.session.ResultHandler</node>
+    <node x="0.0" y="334.0">org.apache.ibatis.executor.resultset.ResultSetWrapper</node>
+    <node x="295.5" y="167.0">org.apache.ibatis.session.ResultContext</node>
+    <node x="278.0" y="86.0">org.apache.ibatis.executor.result.DefaultMapResultHandler</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.apache.ibatis.executor.result.DefaultResultHandler" target="org.apache.ibatis.session.ResultHandler">
+      <point x="0.0" y="-18.0" />
+      <point x="635.5" y="61.0" />
+      <point x="447.5" y="61.0" />
+      <point x="52.0" y="18.0" />
+    </edge>
+    <edge source="org.apache.ibatis.executor.result.DefaultResultContext" target="org.apache.ibatis.session.ResultContext">
+      <point x="0.0" y="-18.0" />
+      <point x="0.0" y="18.0" />
+    </edge>
+    <edge source="org.apache.ibatis.cursor.defaults.DefaultCursor.ObjectWrapperResultHandler" target="org.apache.ibatis.session.ResultHandler">
+      <point x="0.0" y="-18.0" />
+      <point x="129.0" y="61.0" />
+      <point x="343.5" y="61.0" />
+      <point x="-52.0" y="18.0" />
+    </edge>
+    <edge source="org.apache.ibatis.cursor.defaults.DefaultCursor" target="org.apache.ibatis.cursor.Cursor">
+      <point x="0.0" y="-18.0" />
+      <point x="0.0" y="18.0" />
+    </edge>
+    <edge source="org.apache.ibatis.executor.resultset.DefaultResultSetHandler" target="org.apache.ibatis.executor.resultset.ResultSetHandler">
+      <point x="0.0" y="-18.0" />
+      <point x="0.0" y="18.0" />
+    </edge>
+    <edge source="org.apache.ibatis.executor.result.DefaultMapResultHandler" target="org.apache.ibatis.session.ResultHandler">
+      <point x="0.0" y="-18.0" />
+      <point x="0.0" y="18.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="690.0" y="98.5" />
+  <SelectedNodes>
+    <node>org.apache.ibatis.session.ResultHandler</node>
+  </SelectedNodes>
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
