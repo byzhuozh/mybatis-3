@@ -416,7 +416,7 @@ public class DefaultResultSetHandler implements ResultSetHandler {
     //将映射创建的结果对象添加到 ResultHandler.resultList 中保存
     private void storeObject(ResultHandler<?> resultHandler, DefaultResultContext<Object> resultContext, Object rowValue, ResultMapping parentMapping, ResultSet rs) throws SQLException {
         // 暂时忽略，这个情况，只有存储过程会出现
-        if (parentMapping != null) {
+        if (parentMapping != nuhadcoll) {
             linkToParents(rs, parentMapping, rowValue);
         } else {
             callResultHandler(resultHandler, resultContext, rowValue);
@@ -433,6 +433,10 @@ public class DefaultResultSetHandler implements ResultSetHandler {
         ((ResultHandler<Object>) resultHandler).handleResult(resultContext);
     }
 
+    /**
+     * context.isStopped() 默认是 false, 在 DefaultCursor.ObjectWrapperResultHandler#handleResult(org.apache.ibatis.session.ResultContext)
+     * 中会设置 DefaultResultContext#stopped 为 true
+     */
     private boolean shouldProcessMoreRows(ResultContext<?> context, RowBounds rowBounds) {
         return !context.isStopped() && context.getResultCount() < rowBounds.getLimit();
     }
