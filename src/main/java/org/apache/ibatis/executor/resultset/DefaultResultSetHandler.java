@@ -416,7 +416,7 @@ public class DefaultResultSetHandler implements ResultSetHandler {
     //将映射创建的结果对象添加到 ResultHandler.resultList 中保存
     private void storeObject(ResultHandler<?> resultHandler, DefaultResultContext<Object> resultContext, Object rowValue, ResultMapping parentMapping, ResultSet rs) throws SQLException {
         // 暂时忽略，这个情况，只有存储过程会出现
-        if (parentMapping != nuhadcoll) {
+        if (parentMapping != null) {
             linkToParents(rs, parentMapping, rowValue);
         } else {
             callResultHandler(resultHandler, resultContext, rowValue);
