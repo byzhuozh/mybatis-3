@@ -801,9 +801,11 @@ public class Configuration {
     }
 
     public MappedStatement getMappedStatement(String id, boolean validateIncompleteStatements) {
+        // 校验，保证所有 MappedStatement 已经构造完毕
         if (validateIncompleteStatements) {
             buildAllStatements();
         }
+        // 获取 MappedStatement 对象
         return mappedStatements.get(id);
     }
 
@@ -857,14 +859,17 @@ public class Configuration {
      * statement validation.
      */
     protected void buildAllStatements() {
-        parsePendingResultMaps();
-        if (!incompleteCacheRefs.isEmpty()) {
+
+        parsePendingResultMaps();   // 保证 incompleteResultMaps 被解析完
+
+        if (!incompleteCacheRefs.isEmpty()) {   // 保证 incompleteCacheRefs 被解析完
             synchronized (incompleteCacheRefs) {
                 incompleteCacheRefs.removeIf(x -> x.resolveCacheRef() != null);
             }
         }
+
         if (!incompleteStatements.isEmpty()) {
-            synchronized (incompleteStatements) {
+            synchronized (incompleteStatements) {   // 保证 incompleteStatements 被解析完
                 incompleteStatements.removeIf(x -> {
                     x.parseStatementNode();
                     return true;
@@ -872,7 +877,7 @@ public class Configuration {
             }
         }
         if (!incompleteMethods.isEmpty()) {
-            synchronized (incompleteMethods) {
+            synchronized (incompleteMethods) {  // 保证 incompleteMethods 被解析完
                 incompleteMethods.removeIf(x -> {
                     x.resolve();
                     return true;
@@ -885,7 +890,7 @@ public class Configuration {
         if (incompleteResultMaps.isEmpty()) {
             return;
         }
-        synchronized (incompleteResultMaps) {
+        synchronized (incompleteResultMaps) {   // 保证 incompleteResultMaps 被解析完
             boolean resolved;
             IncompleteElementException ex = null;
             do {
